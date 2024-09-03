@@ -1,0 +1,63 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class NumberGame {
+    private static final int MAX_ATTEMPTS = 5; 
+    private static final int RANGE_MIN = 1; 
+    private static final int RANGE_MAX = 100; 
+    private static Scanner scanner = new Scanner(System.in);
+    private static Random random = new Random();
+
+    public static void main(String[] args) {
+        
+        int roundsWon = 0;
+        boolean playAgain;
+
+        do {
+            playAgain = playRound();
+            if (playAgain) {
+                roundsWon++;
+            }
+        } while (playAgain);
+
+        System.out.println("Game over! You won " + roundsWon + " round.");
+    }
+
+    private static boolean playRound() {
+        int targetNumber = random.nextInt(RANGE_MAX - RANGE_MIN + 1) + RANGE_MIN;
+        int attemptsLeft = MAX_ATTEMPTS;
+        boolean hasGuessedCorrectly = false;
+
+        System.out.println("Guess the number between " + RANGE_MIN + " and " + RANGE_MAX + ":");
+
+        while (attemptsLeft > 0) {
+            System.out.print("Enter your guess: ");
+            int userGuess = scanner.nextInt();
+
+            if (userGuess < RANGE_MIN || userGuess > RANGE_MAX) {
+                System.out.println("Guess out of range! Please guess a number between " + RANGE_MIN + " and " + RANGE_MAX + ".");
+                continue;
+            }
+
+            if (userGuess == targetNumber) {
+                System.out.println("Congratulations! You guessed the number correctly.");
+                hasGuessedCorrectly = true;
+                break;
+            } else if (userGuess < targetNumber) {
+                System.out.println("Too low! Try again.");
+            } else {
+                System.out.println("Too high! Try again.");
+            }
+            
+
+            attemptsLeft--;
+            if (attemptsLeft > 0) {
+                System.out.println("Attempts left: " + attemptsLeft);
+            } else {
+                System.out.println("Sorry, you've run out of attempts. The correct number was " + targetNumber + ".");
+            }
+        }
+
+        return hasGuessedCorrectly;
+    }
+}
